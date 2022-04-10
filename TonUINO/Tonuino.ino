@@ -781,6 +781,7 @@ void setup() {
   if (digitalRead(buttonPause) == LOW && digitalRead(buttonUp) == LOW &&
       digitalRead(buttonDown) == LOW) {
     Serial.println(F("Reset -> EEPROM wird gelöscht"));
+<<<<<<< HEAD:Tonuino.ino
     for (int i = 0; i < EEPROM.length(); i++) {
       EEPROM.update(i, 0);
     }
@@ -892,6 +893,10 @@ void playFolder() {
     currentTrack = EEPROM.read(myFolder->folder);
     if (currentTrack == 0 || currentTrack > numTracksInFolder) {
       currentTrack = 1;
+=======
+    for (unsigned int i = 0; i < EEPROM.length(); i++) {
+      EEPROM.write(i, 0);
+>>>>>>> origin/platformio_integration:TonUINO/Tonuino.ino
     }
     mp3.playFolderTrack(myFolder->folder, currentTrack);
   }
@@ -1112,6 +1117,7 @@ void loop() {
   mfrc522.PCD_StopCrypto1();
 }
 
+<<<<<<< HEAD:Tonuino.ino
 void adminMenu(bool fromCard = false) {
   disablestandbyTimer();
   mp3.pause();
@@ -1346,6 +1352,11 @@ bool askCode(uint8_t *code) {
 uint8_t voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
                   bool preview = false, int previewFromFolder = 0, int defaultValue = 0, bool exitWithLongPress = false) {
   uint8_t returnValue = defaultValue;
+=======
+int voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
+              bool preview, int previewFromFolder) {
+  int returnValue = 0;
+>>>>>>> origin/platformio_integration:TonUINO/Tonuino.ino
   if (startMessage != 0)
     mp3.playMp3FolderTrack(startMessage);
   Serial.print(F("=== voiceMenu() ("));
@@ -1544,7 +1555,11 @@ bool readCard(nfcTagObject * nfcTag) {
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("PCD_Authenticate() failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
+<<<<<<< HEAD:Tonuino.ino
     return false;
+=======
+    return returnValue;
+>>>>>>> origin/platformio_integration:TonUINO/Tonuino.ino
   }
 
   // Show the whole sector as it currently is
@@ -1694,7 +1709,6 @@ bool readCard(nfcTagObject * nfcTag) {
 
 
 void writeCard(nfcTagObject nfcTag) {
-  MFRC522::PICC_Type mifareType;
   byte buffer[16] = {0x13, 0x37, 0xb3, 0x47, // 0x1337 0xb347 magic cookie to
                      // identify our nfc tags
                      0x02,                   // version 1
@@ -1704,10 +1718,6 @@ void writeCard(nfcTagObject nfcTag) {
                      nfcTag.nfcFolderSettings.special2,
                      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
                     };
-
-  byte size = sizeof(buffer);
-
-  mifareType = mfrc522.PICC_GetType(mfrc522.uid.sak);
 
   // Authenticate using key B
   //authentificate with the card and set card specific parameters

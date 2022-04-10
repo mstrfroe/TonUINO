@@ -26,6 +26,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
-# TonUINO
-/tools/*.pyc
+.pio
+.vscode
